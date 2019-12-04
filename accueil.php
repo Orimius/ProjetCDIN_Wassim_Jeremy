@@ -74,6 +74,7 @@ $posList = array(
     </nav>
 	<div class="container" style="margin-top: 3%">
 		<div class="row" style="margin-top: 5%;">
+			
 			<div class="col-lg">
 				<h1>Équipe actuelle</h1>
 				<ul style="margin-top: 8%;">
@@ -95,6 +96,7 @@ $posList = array(
 				<?php } ?>
 				
 			</div>
+
 			<div class="col-lg">
 				<h1> Ajoutez un <?php echo $posList[$PagePos]; ?> </h1>
 				<table style="margin-top: 5%" class="table">
@@ -108,7 +110,7 @@ $posList = array(
 					</thead>
 					<tbody>
 						<?php foreach ($players as $key => $player) { 
-							if ($player["poste"] == $posList[$PagePos]) { ?>
+							if ($player["role"] == $posList[$PagePos]) { ?>
 							<tr>
 								<td><?php echo $player["prenom"] ?></td>
 								<td><?php echo $player["nom"] ?></td>

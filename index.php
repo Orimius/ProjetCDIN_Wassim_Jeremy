@@ -1,3 +1,3 @@
 <?php
-	header("Location: accueil.php");
+	header("Location: gardien.php");
 ?>

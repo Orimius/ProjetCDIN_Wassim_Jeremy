@@ -2,7 +2,7 @@
 
 session_start();
 if(isset($_POST["RAZ"])) {
-	foreach ($posList as $ => $value) {
+	foreach ($posList as $key => $value) {
 		if(isset($_SESSION["POS_".$key])) { 
 			unset($_SESSION["POS_".$key]);
 		}

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-if(isset($_POST["RAZ"])) {
+if(isset($_POST["raz"])) {
 	foreach ($posList as $key => $value) {
 		if(isset($_SESSION["POS_".$key])) { 
 			unset($_SESSION["POS_".$key]);
@@ -10,7 +10,7 @@ if(isset($_POST["RAZ"])) {
 }
 if(isset($_POST["joueur"])) {
 	$id = $_POST["joueur"];
-	$_SESSION["POS_".$PagePos] = $id;
+	$_SESSION["POS_".$PosPage] = $id;
 }
 
 ?>
@@ -55,13 +55,13 @@ $posList = array(
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
 	    <a class="navbar-brand" href="accueil.php">
-	            <img class="logo" src="assets/img/FFF.png" alt="">
+	            <img class="logo" src="FFF.png" alt="">
 	    </a>
        	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span>Menu</span>
-        <span class="navbar-toggler-icon"></span>
+        	<span>Menu</span>
+        	<span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -87,7 +87,7 @@ $posList = array(
 							}
 						}
 						if(!$minimum) {
-							echo "<p> L'equipe est vide </p>";
+							echo "<p> L'équipe est vide ! Ajoutez des joueurs. </p>";
 						}
 					?>
 				</ul>
@@ -98,7 +98,7 @@ $posList = array(
 			</div>
 
 			<div class="col-lg">
-				<h1> Ajoutez un <?php echo $posList[$PagePos]; ?> </h1>
+				<h1> Ajoutez un <?php echo $posList[$PosPage]; ?> </h1>
 				<table style="margin-top: 5%" class="table">
 					<thead>
 						<tr>
@@ -110,12 +110,16 @@ $posList = array(
 					</thead>
 					<tbody>
 						<?php foreach ($players as $key => $player) { 
-							if ($player["role"] == $posList[$PagePos]) { ?>
+							if ($player["poste"] == $posList[$PosPage]) { ?>
 							<tr>
 								<td><?php echo $player["prenom"] ?></td>
 								<td><?php echo $player["nom"] ?></td>
 								<td><?php echo $key ?></td>
-								<td><form method="post"><button class="btn btn-success" type="submit" name="player" value="<?php echo $key; ?>">Ajouter</button></form></td>
+								<td>
+									<form method="post">
+										<button class="btn btn-success" type="submit" name="player" value="<?php echo $key; ?>">Ajouter</button>
+									</form>
+								</td>
 							</tr>
 							<?php }
 						} ?>

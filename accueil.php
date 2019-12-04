@@ -1,15 +1,13 @@
 <?php
 
 session_start();
-if(isset($_POST["raz"])) {
-	foreach ($posList as $key => $value) {
-		if(isset($_SESSION["POS_".$key])) { 
-			unset($_SESSION["POS_".$key]);
-		}
+if(isset($_POST["RAZ"])) {
+	foreach ($_SESSION as $key => $value) {
+		unset($_SESSION[$key]);
 	}
 }
-if(isset($_POST["joueur"])) {
-	$id = $_POST["joueur"];
+if(isset($_POST["player"])) {
+	$id = $_POST["player"];
 	$_SESSION["POS_".$PosPage] = $id;
 }
 
@@ -117,7 +115,7 @@ $posList = array(
 								<td><?php echo $key ?></td>
 								<td>
 									<form method="post">
-										<button class="btn btn-success" type="submit" name="player" value="<?php echo $player; ?>">Ajouter</button>
+										<button class="btn btn-success" type="submit" name="player" value="<?php echo $key; ?>">Ajouter</button>
 									</form>
 								</td>
 							</tr>

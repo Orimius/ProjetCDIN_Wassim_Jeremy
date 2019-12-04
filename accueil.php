@@ -57,7 +57,7 @@ $posList = array(
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
 	    <a class="navbar-brand" href="accueil.php">
-	            <img class="logo" src="FFF.png" alt="">
+	            <img class="logo" src="FFF.png">
 	    </a>
        	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         	<span>Menu</span>
@@ -117,7 +117,7 @@ $posList = array(
 								<td><?php echo $key ?></td>
 								<td>
 									<form method="post">
-										<button class="btn btn-success" type="submit" name="player" value="<?php echo $key; ?>">Ajouter</button>
+										<button class="btn btn-success" type="submit" name="player" value="<?php echo $player; ?>">Ajouter</button>
 									</form>
 								</td>
 							</tr>

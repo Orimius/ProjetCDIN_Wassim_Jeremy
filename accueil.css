@@ -1,37 +1,13 @@
-body {
-	font-size: 40px;
+* {
+	font-size: 20px;
 }
 
-h1 {
-	font-size: 40px;
+.barredenav {
+	margin: auto;
+	font-size: 70px !important;
 }
 
-button {
-	font-size: 3rem !important;
-}
-
-a {
-	font-size: 3rem !important;
-}
-
-.linkNav {
-	font-size: 2rem !important;
-}
-
-@media (min-width: 600px) {  
-	body {
-		font-size:1rem;
-	} /*1rem = 16px*/
-	h1 {
-		font-size:3rem;
-	} /*1rem = 16px*/
-	button {
-		font-size: 1rem !important;
-	}
-	a {
-		font-size: 1.5rem !important;
-	}
-	.linkNav {
-		font-size: 1rem !important;
-	}
+.container {
+	margin: auto;
+	font-size: 32px;
 }

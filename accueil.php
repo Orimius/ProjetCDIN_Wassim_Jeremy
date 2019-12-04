@@ -1,5 +1,7 @@
 <?php
-
+if(!isset($PosPage)) {
+	$PosPage=1;//Guardientpr defaut
+}
 session_start();
 if(isset($_POST["RAZ"])) {
 	foreach ($_SESSION as $key => $value) {
@@ -47,40 +49,42 @@ $posList = array(
 	<title>Gestion de l'équipe</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="accueil.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
-	    <a class="navbar-brand" href="accueil.php">
-	            <img class="logo" src="FFF.png">
-	    </a>
-       	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        	<span>Menu</span>
-        	<span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="gardien.php">Gardien</a></li>
-                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="defenseur.php">Défenseur</a></li>
-                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="milieu.php">Milieu</a></li>
-                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="attaquant.php">Attaquant</a></li>
-            </ul>
-        </div>
+    	<div class="container">
+		    <a class="navbar-brand" href="accueil.php">
+		            <img class="logo" src="FFF.png">
+		    </a>
+	       	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+	        	<span>Menu</span>
+	        	<span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="barredenav collapse navbar-collapse" id="navbarResponsive">
+	            <ul class="navbar-nav ml-auto">
+	                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="gardien.php">Gardien</a></li>
+	                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="defenseur.php">Défenseur</a></li>
+	                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="milieu.php">Milieu</a></li>
+	                <li class="nav-item nav-item-big px-2"><a class="nav-link" href="attaquant.php">Attaquant</a></li>
+	            </ul>
+	        </div>
+	    </div>
     </nav>
-	<div class="container" style="margin-top: 3%">
-		<div class="row" style="margin-top: 5%;">
+	<div class="container" style="margin-top: 3%; float: none;">
+		<div class="row" style="margin-top: 5%; float: none;">
 			
-			<div class="col-lg">
+			<div class="col-lg"> 
 				<h1>Équipe actuelle</h1>
-				<ul style="margin-top: 8%;">
+				<ul style="margin-top: 8%; float: none;">
 					<?php
 						$minimum = false;
 						foreach ($posList as $key => $value) {
 							if(isset($_SESSION["POS_".$key])) { 
-								echo "<li>" . $value . ": " . $players[$_SESSION["POS_".$key]]["prenom"] . " " . $players[$_SESSION["POS_".$key]]["nom"] ." </li>";
+								echo "<li>" . $value . " : " . $players[$_SESSION["POS_".$key]]["prenom"] . " " . $players[$_SESSION["POS_".$key]]["nom"] ." </li>";
 								$minimum = true;
 							}
 						}
@@ -97,7 +101,7 @@ $posList = array(
 
 			<div class="col-lg">
 				<h1> Ajoutez un <?php echo $posList[$PosPage]; ?> </h1>
-				<table style="margin-top: 5%" class="table">
+				<table style="margin-top: 5%; float: none;" class="table">
 					<thead>
 						<tr>
 							<th scope="col">Prénom</th>

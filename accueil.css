@@ -11,3 +11,18 @@
 	margin: auto;
 	font-size: 32px;
 }
+
+.table {
+	margin-top: 5%;
+	float: none;
+}
+
+ul {
+	 margin-top: 8%;
+	 float: none;
+}
+
+.row {
+	margin-top: 5%;
+	float: none;
+}

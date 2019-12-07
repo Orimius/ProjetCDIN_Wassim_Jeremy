@@ -1,20 +1,6 @@
 <?php
-if(!isset($PosPage)) {
-	$PosPage = 1; // Gardien par défaut
-}
-session_start();
-if(isset($_POST["RAZ"])) {
-	foreach ($_SESSION as $key => $value) {
-		unset($_SESSION[$key]);
-	}
-}
-if(isset($_POST["player"])) {
-	$id = $_POST["player"];
-	$_SESSION["POS_".$PosPage] = $id;
-}
-?>
 
-<?php
+session_start();
 
 $players = array(
 	1 => array(  "nom" => "Lloris", "prenom" => "Hugo", "poste" => "Gardien"),
@@ -34,14 +20,31 @@ $players = array(
 	23 => array(  "nom" => "Areola", "prenom" => "Alphonse", "poste" => "Gardien"),
 );
 
-$posList = array(
+$Poste = array(
 	1 => "Gardien",
 	2 => "Défenseur",
 	3 => "Milieu",
 	4 => "Attaquant",
 );
 
+
+if(!isset($NumPage)) { // Affiche par défaut la page gardien
+	$NumPage = 1;
+}
+
+if(isset($_POST["RAZ"])) {	// Efface les joueurs sélectionné quand on appuie sur RAZ
+	foreach ($_SESSION as $key => $value) {
+		unset($_SESSION[$key]);
+	}
+}
+
+if(isset($_POST["player"])) {	// Affiche les joueurs sélectionné dans la liste
+	$id = $_POST["player"];
+	$_SESSION["POS_".$NumPage] = $id;
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -75,33 +78,33 @@ $posList = array(
 	    </div>
     </nav>
 	<div class="container" style="margin-top: 3%; float: none;">
-		<div class="row" style="margin-top: 5%; float: none;">
+		<div class="row">
 			
 			<div class="col-lg"> 
 				<h1>Équipe actuelle</h1>
-				<ul style="margin-top: 8%; float: none;">
+				<ul>
 					<?php
-						$minimum = false;
-						foreach ($posList as $key => $value) {
+						$taileEquipe = 0;
+						foreach ($Poste as $key => $value) {
 							if(isset($_SESSION["POS_".$key])) { 
 								echo "<li>" . $value . " : " . $players[$_SESSION["POS_".$key]]["prenom"] . " " . $players[$_SESSION["POS_".$key]]["nom"] ." </li>";
-								$minimum = true;
+								$taileEquipe = 1;
 							}
 						}
-						if(!$minimum) {
+						if($taileEquipe == 0) {
 							echo "<p> L'équipe est vide ! Ajoutez des joueurs. </p>";
 						}
 					?>
 				</ul>
-				<?php if($minimum) { ?>
+				<?php if($taileEquipe == 1) { ?>
 					<form method="post"><button class="btn btn-danger" type="submit" name="RAZ" value="RAZ">RAZ</button></form>	
 				<?php } ?>
 				
 			</div>
 
 			<div class="col-lg">
-				<h1> Ajoutez un <?php echo $posList[$PosPage]; ?> </h1>
-				<table style="margin-top: 5%; float: none;" class="table">
+				<h1> Ajoutez un <?php echo $Poste[$NumPage]; ?> </h1>
+				<table class="table">
 					<thead>
 						<tr>
 							<th scope="col">Prénom</th>
@@ -112,7 +115,7 @@ $posList = array(
 					</thead>
 					<tbody>
 						<?php foreach ($players as $key => $player) { 
-							if ($player["poste"] == $posList[$PosPage]) { ?>
+							if ($player["poste"] == $Poste[$NumPage]) { ?>
 							<tr>
 								<td><?php echo $player["prenom"] ?></td>
 								<td><?php echo $player["nom"] ?></td>

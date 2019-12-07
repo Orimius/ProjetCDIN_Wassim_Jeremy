@@ -1,3 +1,3 @@
 <?php
-	$PosPage=3;
+	$NumPage=3;
 	include "accueil.php";

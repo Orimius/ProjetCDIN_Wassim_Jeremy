@@ -1,6 +1,6 @@
 <?php
 if(!isset($PosPage)) {
-	$PosPage=1;//Guardientpr defaut
+	$PosPage = 1; // Gardien par défaut
 }
 session_start();
 if(isset($_POST["RAZ"])) {
@@ -12,7 +12,6 @@ if(isset($_POST["player"])) {
 	$id = $_POST["player"];
 	$_SESSION["POS_".$PosPage] = $id;
 }
-
 ?>
 
 <?php
@@ -41,6 +40,7 @@ $posList = array(
 	3 => "Milieu",
 	4 => "Attaquant",
 );
+
 ?>
 
 <!DOCTYPE html>

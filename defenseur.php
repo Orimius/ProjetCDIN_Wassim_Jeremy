@@ -1,3 +1,7 @@
 <?php
-	$NumPage=2;
-	include "accueil.php";
+
+$NumPage = 2;
+
+include "modele.php";
+
+?>

@@ -9,7 +9,7 @@ if (isset($_POST["selection"])) {  /* Vérifie que l'on est ajouté un joueur vi
 	$_SESSION["selection".$NumPage] = $_POST["selection"];	/* $_SESSION = ID du joueur ajouté */
 } 
 
-if (isset($_POST["RAZ"])) {		/* Vérifie qu'on à appuyé sur RAZ */
+if (isset($_POST["RAZ"])) {		/* Vérifie qu'on a appuyé sur RAZ */
 	foreach ($Poste as $key => $nomPoste) {
 		unset($_SESSION["selection".$key]);		/* Réinitialise les valeurs des joueurs sélectionnés */
 	}
@@ -29,7 +29,7 @@ if (isset($_POST["RAZ"])) {		/* Vérifie qu'on à appuyé sur RAZ */
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
     	<div class="container">
-		    <a class="navbar-brand" href="accueil.php"> <img class="logo" src="FFF.png"> </a>
+		    <a class="navbar-brand" href="modele.php"> <img class="logo" src="FFF.png"> </a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 	        	<span>Menu</span>
 	        	<span class="navbar-toggler-icon"></span>
@@ -57,7 +57,7 @@ if (isset($_POST["RAZ"])) {		/* Vérifie qu'on à appuyé sur RAZ */
 									$taille_equipe = true;		/* Change la variable en True car l'équipe est non vide */
 								} } 
 								if (!$taille_equipe) {
-									echo "<span>Composer votre équipe en sélectionnant des joueurs. </span>";	/* Si l'équipe est vide affiche le message */
+									echo "<span>Composez votre équipe en sélectionnant des joueurs. </span>";	/* Si l'équipe est vide affiche le message */
 						}?>
 					</ul>
 					<form method="post"><button class="btn btn-danger btn-lg" type="submit" name="RAZ" value="effacer">RAZ</button></form>

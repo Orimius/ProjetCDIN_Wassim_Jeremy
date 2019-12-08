@@ -29,7 +29,7 @@ if (isset($_POST["RAZ"])) {		/* Vérifie qu'on a appuyé sur RAZ */
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
     	<div class="container">
-		    <a class="navbar-brand" href="modele.php"> <img class="logo" src="FFF.png"> </a>
+		    <a class="navbar-brand" href="index.php"> <img class="logo" src="FFF.png"> </a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 	        	<span>Menu</span>
 	        	<span class="navbar-toggler-icon"></span>

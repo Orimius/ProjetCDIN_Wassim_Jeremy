@@ -77,16 +77,16 @@ public class Povocoder {
 	        
 	        int longSupr = (int)(longInput*freqScale+1);
 
-	        int lonNewPitchWav1 = longInput-longSupr;
+	        int longNewPitchWav1 = longInput-longSupr;
 
 	        int freqSupr = longInput/longSupr;
 	        
-	        double [] newPitchWav1 = new double [lonNewPitchWav1];
+	        double [] newPitchWav1 = new double [longNewPitchWav1];
 
 	        System.out.println("longInput = "+longInput);
 	        System.out.println("freqScale = "+freqScale);
 	        System.out.println("longSupr = "+longSupr);
-	        System.out.println("lonNewPitchWav1 = "+lonNewPitchWav1);
+	        System.out.println("longNewPitchWav1 = "+longNewPitchWav1);
 	        System.out.println("freqSupr = "+freqSupr);
 
 	        int compteur = 0;
@@ -108,30 +108,35 @@ public class Povocoder {
         
         if(freqScale < 1)
         {
-            double freqEchantillon = (1-freqScale)/freqScale;	// frequence d'échantillonnage
-            
-            double longThNewSignal = (longInput+(longInput*freqEchantillon));	// longueur théorique du nouveau signal
-            
-            int freqSupr = (int)(longInput/(longThNewSignal-longInput));    // frequence de valeur à ajouter
+        	freqScale = (1-freqScale)/freqScale;
+        
+	        int longAdd = (int)(longInput*freqScale);
 
-            int longNewSignal = (int)(longInput*(1.0+(1.05/freqSupr)));   // longueur du nouveau signal
-            System.out.println(freqSupr);
-            double [] newPitchWav2 = new double[longNewSignal];
+	        int longNewPitchWav2 = longInput+longAdd;
 
-            int compteur = 0;
+	        int freqAdd = longInput/longAdd;
+	        
+	        double [] newPitchWav2 = new double [longNewPitchWav2];
 
-            for(int i=0; i<longNewSignal; i++)
-			{
-	            newPitchWav2[i] = input[i-compteur];
-	            if(i%freqSupr == 0)
+	        System.out.println("longInput = "+longInput);
+	        System.out.println("freqScale = "+freqScale);
+	        System.out.println("longAdd = "+longAdd);
+	        System.out.println("longNewPitchWav2 = "+longNewPitchWav2);
+	        System.out.println("freqAdd = "+freqAdd);
+
+	        int compteur = -1;
+
+	        for(int i=0; i<longNewPitchWav2; i++)
+	        {
+	           if(i%freqAdd == 0)
 	            {
-	                compteur++;  
+	                compteur++;
 	            }
+	           
+	            newPitchWav2[i] = input[i-compteur]; 
+	            
 	        }
-            //  for(int i=0; i<longNewSignal; i++)
-            // {
-            //     System.out.println(newPitchWav2[i]);
-            // }
+            
             return newPitchWav2;
         }
 

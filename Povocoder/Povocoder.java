@@ -68,45 +68,53 @@ public class Povocoder {
 
     public static double[] resample(double[] input, double freqScale)
     {
-        double longSignal = input.length; // Longueur du signal de base
+        int longInput = input.length;
 
         if(freqScale > 1)
         {
-            double freqEchantillon = (freqScale-1)/freqScale; // frequence d'échantillonnage
+        
+	        freqScale = (freqScale-1)/freqScale;
+	        
+	        int longSupr = (int)(longInput*freqScale+1);
 
-            double longThNewSignal = (longSignal-(longSignal*freqEchantillon)); // longueur théorique du nouveau signal
+	        int lonNewPitchWav1 = longInput-longSupr;
 
-            int freqSupr = (int)(longSignal/(longSignal-longThNewSignal));    // frequence de valeur à surprimer
+	        int freqSupr = longInput/longSupr;
+	        
+	        double [] newPitchWav1 = new double [lonNewPitchWav1];
 
-            int longNewSignal = (int)(longSignal-(longSignal/freqSupr));   // longueur du nouveau signal
+	        System.out.println("longInput = "+longInput);
+	        System.out.println("freqScale = "+freqScale);
+	        System.out.println("longSupr = "+longSupr);
+	        System.out.println("lonNewPitchWav1 = "+lonNewPitchWav1);
+	        System.out.println("freqSupr = "+freqSupr);
 
-            double [] newPitchWav1 = new double[longNewSignal];
+	        int compteur = 0;
 
-            int compteur = 0;
-
-            for(int i=0; i<longSignal; i++)
-            {
-                if(i%freqSupr != 0)
-                {
-                    newPitchWav1[i] = input[i-compteur];
-                }
-                else
-                {
-                    compteur++;
-                }
-            }
-           
-            return newPitchWav1;
+	        for(int i=0; i<longInput; i++)
+	        {
+	           if(i%freqSupr != 0)
+	            {
+	               newPitchWav1[i-compteur] = input[i]; 
+	            }
+	            else
+	            {
+	                compteur++;
+	            }      
+	        }
+	        
+       		return newPitchWav1;
         }
+        
         if(freqScale < 1)
         {
             double freqEchantillon = (1-freqScale)/freqScale;	// frequence d'échantillonnage
             
-            double longThNewSignal = (longSignal+(longSignal*freqEchantillon));	// longueur théorique du nouveau signal
+            double longThNewSignal = (longInput+(longInput*freqEchantillon));	// longueur théorique du nouveau signal
             
-            int freqSupr = (int)(longSignal/(longThNewSignal-longSignal));    // frequence de valeur à ajouter
+            int freqSupr = (int)(longInput/(longThNewSignal-longInput));    // frequence de valeur à ajouter
 
-            int longNewSignal = (int)(longSignal*(1.0+(1.05/freqSupr)));   // longueur du nouveau signal
+            int longNewSignal = (int)(longInput*(1.0+(1.05/freqSupr)));   // longueur du nouveau signal
             System.out.println(freqSupr);
             double [] newPitchWav2 = new double[longNewSignal];
 

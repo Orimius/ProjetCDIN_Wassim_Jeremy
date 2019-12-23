@@ -65,6 +65,7 @@ public class Povocoder {
     */
 
     public static void joue(double[] input) {
+    	StdDraw.enableDoubleBuffering();
         StdAudio.play(input);
 
         StdDraw.setXscale(-10.0, input.length+10.0);
@@ -75,6 +76,7 @@ public class Povocoder {
 
             StdDraw.line(i,input[i],i,-input[i]);
         }
+        StdDraw.show();
     }
 
     /**

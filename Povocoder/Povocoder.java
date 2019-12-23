@@ -60,12 +60,21 @@ public class Povocoder {
     }
     
     /**
-    * Joue un fichier .wav
+    * Joue un signal et affiche son spectre
     * @param input
     */
 
     public static void joue(double[] input) {
         StdAudio.play(input);
+
+        StdDraw.setXscale(-10.0, input.length+10.0);
+        StdDraw.setYscale(-1.5, 1.5);
+        StdDraw.setPenRadius(0.0005);
+        
+        for(int i=0; i<input.length; i++)   {
+
+            StdDraw.line(i,input[i],i,-input[i]);
+        }
     }
 
     /**

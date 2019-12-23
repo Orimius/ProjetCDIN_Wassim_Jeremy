@@ -35,8 +35,8 @@ public class Povocoder {
             StdAudio.save(outPutFile+"Resampled.wav", newPitchWav);
 
             // Simple dilatation
-            // double[] outputWav   = vocodeSimple(newPitchWav, 1.0/freqScale);
-            // StdAudio.save(outPutFile+"Simple.wav", outputWav);
+            double[] outputWav   = vocodeSimple(newPitchWav, 1.0/freqScale);
+            StdAudio.save(outPutFile+"Simple.wav", outputWav);
 
             // Simple dilatation with overlaping
             // outputWav = vocodeSimpleOver(newPitchWav, 1.0/freqScale);
@@ -46,11 +46,11 @@ public class Povocoder {
             // outputWav = vocodeSimpleOverCross(newPitchWav, 1.0/freqScale);
             // StdAudio.save(outPutFile+"SimpleOverCross.wav", outputWav);
 
-            joue(newPitchWav);
+            joue(outputWav);
 
             // Some echo above all
-            // outputWav = echo(outputWav, 100, 0.7);
-            // StdAudio.save(outPutFile+"SimpleOverCrossEcho.wav", outputWav);
+            outputWav = echo(outputWav, 100, 0.7);
+            StdAudio.save(outPutFile+"SimpleOverCrossEcho.wav", outputWav);
 
         }
         catch (Exception e)
@@ -59,93 +59,170 @@ public class Povocoder {
         }
     }
     
-    public static void joue(double[] input)
-    {
+    /**
+    * Joue un fichier .wav
+    * @param input
+    */
 
-      StdAudio.play(input);  
-
+    public static void joue(double[] input) {
+        StdAudio.play(input);
     }
 
-    public static double[] resample(double[] input, double freqScale)
-    {
-        int longInput = input.length;
+    /**
+    * Ré-échantillonne un signal en fonction d'une frquence donnée
+    * @param input
+    * @param freqScale
+    * @return double[] : le signal ré-échantillonné 
+    */
 
-        if(freqScale > 1)
-        {
+    public static double[] resample(double[] input, double freqScale)   {
+        int inputSize = input.length;
         
-	        freqScale = (freqScale-1)/freqScale;
-	        
-	        int longSupr = (int)(longInput*freqScale+1);
+        if(freqScale > 1)   {
+            
+            freqScale = (freqScale-1)/freqScale;
+	        int sizeDelete = (int)(inputSize*freqScale+1);
+	        int outputSize = inputSize-sizeDelete;
+	        int freqDelete = inputSize/sizeDelete;
+            int compteur = 0;
 
-	        int longNewPitchWav1 = longInput-longSupr;
+	        double [] output = new double [outputSize];
 
-	        int freqSupr = longInput/longSupr;
-	        
-	        double [] newPitchWav1 = new double [longNewPitchWav1];
-
-	        System.out.println("longInput = "+longInput);
-	        System.out.println("freqScale = "+freqScale);
-	        System.out.println("longSupr = "+longSupr);
-	        System.out.println("longNewPitchWav1 = "+longNewPitchWav1);
-	        System.out.println("freqSupr = "+freqSupr);
-
-	        int compteur = 0;
-
-	        for(int i=0; i<longInput; i++)
-	        {
-	           if(i%freqSupr != 0)
-	            {
-	               newPitchWav1[i-compteur] = input[i]; 
-	            }
-	            else
-	            {
-	                compteur++;
-	            }      
+	        for(int i=0; i<inputSize; i++) {
+	           
+               if(i%freqDelete != 0)  {
+	               output[i-compteur] = input[i];
+               }
+	           else compteur++;
 	        }
-	        
-       		return newPitchWav1;
+	        return output;
         }
         
-        if(freqScale < 1)
-        {
-        	freqScale = (1-freqScale)/freqScale;
-        
-	        int longAdd = (int)(longInput*freqScale);
-
-	        int longNewPitchWav2 = longInput+longAdd;
-
-	        int freqAdd = longInput/longAdd;
-	        
-	        double [] newPitchWav2 = new double [longNewPitchWav2];
-
-	        System.out.println("longInput = "+longInput);
-	        System.out.println("freqScale = "+freqScale);
-	        System.out.println("longAdd = "+longAdd);
-	        System.out.println("longNewPitchWav2 = "+longNewPitchWav2);
-	        System.out.println("freqAdd = "+freqAdd);
-
+        if(freqScale < 1)   {
+        	
+            freqScale = (1-freqScale)/freqScale;
+	        int sizeAdd = (int)(inputSize*freqScale);
+	        int outputSize = inputSize+sizeAdd;
+	        int freqAdd = inputSize/sizeAdd;
 	        int compteur = -1;
 
-	        for(int i=0; i<longNewPitchWav2; i++)
-	        {
-	           if(i%freqAdd == 0)
-	            {
+	        double [] output = new double [outputSize];
+
+            for(int i=0; i<outputSize; i++)  {
+                if(i%freqAdd == 0)  {
 	                compteur++;
-	            }
-	           
-	            newPitchWav2[i] = input[i-compteur]; 
-	            
-	        }
-            
-            return newPitchWav2;
+                }
+                output[i] = input[i-compteur];
+            }
+            return output;
         }
-
         return input;
-    }    
+    }   
+    
+    /**
+    * Ajoute de l'écho a un signal avec delayMS de délais et atténué de attn
+    * @param input
+    * @param timeScale
+    * @return double[] : le signal compressé ou dilaté 
+    */
 
-  }
+    public static double[] echo(double[] input, double delayMS, double attn)    {
+        if(attn <= 0)   {
+            return input;
+        }
+        
+        int decallage = 44100 * (int)delayMS / 1000;
+        int outputSize = input.length + decallage;
+        double[] output = new double[outputSize];
 
+        for (int i=0;i<input.length; i++)   {
+            output[i] = input[i];
+        }
+        for (int i=decallage; i< outputSize; i++ )  {
+            output[i] = (output[i] + input[i-decallage] * attn) /2;
+        }
+        return output;
+    }
 
+    /**
+    * Dilate ou compresse le signal en fonction d'une fréquence
+    * @param input
+    * @param timeScale
+    * @return double[] : le signal compressé ou dilaté 
+    */
 
+    public static double[] vocodeSimple(double[] input, double timeScale)   {
+        if (timeScale < 1)  {
+            
+            int inputSize = input.length;
+            int nbSeqInput = (int)inputSize / SEQUENCE;
+            int nbSeqOutput = (int)(inputSize / timeScale) / SEQUENCE;
+            int size = (nbSeqOutput * SEQUENCE) / nbSeqInput;
+            int outputSize = nbSeqInput * size;
+            int compteInput = 0;
+            int compteOutput = 0;
 
+            double[] output = new double [outputSize]; 
 
+            for(int i=0; i<nbSeqInput-1; i++)   {
+                
+                for(int j=0; j<size; j++)   {
+                    output[j+compteOutput] = input[j+compteInput];
+                }
+                compteOutput += size;
+
+                for(int j=0; j<size; j++)   {
+                    output[j+compteOutput] = input[j+compteInput];
+                }
+                compteInput += SEQUENCE;
+            }
+            return output;
+        }
+        if (timeScale > 1)  {
+            
+            int inputSize = input.length;            
+            int nbSeqInput = (int)inputSize / SEQUENCE;
+            int nbSeqOutput = (int)(inputSize / timeScale) / SEQUENCE;
+            int size = (nbSeqOutput * SEQUENCE) / nbSeqInput;
+            int outputSize = nbSeqInput * size;
+            int compteInput = 0;
+            int compteOutput = 0;
+
+            double[] output = new double [outputSize]; 
+
+            for(int i=0; i<nbSeqInput-1; i++)   {
+                
+                for(int j=0; j<size; j++)   {
+                    output[j+compteOutput] = input[j+compteInput];
+                }
+                compteOutput += size;
+
+                for(int j=0; j<size; j++)   {
+                    output[j+compteOutput] = input[j+compteInput];
+                }
+                compteInput += SEQUENCE;
+            }
+            return output;
+        }
+        return input;
+
+// Le calcul de la durée du signal de sortie :
+// 
+// 1) On calcul le nombre de valeur pour 100 ms soit 4 410 valeurs
+//    ici c'est la constante SEQUENCE.
+//
+// 2) Ensuite on divise la taille du signal d'entrée par cette valeurs,
+//    on trouve le nombre de séquence de 4 410 valeurs qui compose input :
+//    int nbSeqInput = inputSize / SEQUENCE;
+// 
+// 3) La taille du signal de sortie doit être proche de la taille du 
+//    signal d'entrée divisé par timeScale. Donc on peut trouver le nombre de
+//    séquence qui compose le signal de sortie en divisant par SEQUENCE :
+//    int nbSeqOutput = (int)(inputSize / timeScale) / SEQUENCE;
+//
+// 4) Donc la taille du signal de sortie est égale au nombre de fréquence
+//    multiplié par la taille d'une fréquence soit :
+//    outputSize = nbSeqInput * SEQUENCE;
+
+    }
+}

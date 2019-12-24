@@ -65,7 +65,7 @@ public class Povocoder {
     */
 
     public static void joue(double[] input) {
-    	StdDraw.enableDoubleBuffering();
+        StdDraw.enableDoubleBuffering();
         StdAudio.play(input);
 
         StdDraw.setXscale(-10.0, input.length+10.0);
@@ -92,38 +92,40 @@ public class Povocoder {
         if(freqScale > 1)   {
             
             freqScale = (freqScale-1)/freqScale;
-	        int sizeDelete = (int)(inputSize*freqScale+1);
-	        int outputSize = inputSize-sizeDelete;
-	        int freqDelete = inputSize/sizeDelete;
+            int sizeDelete = (int)(inputSize*freqScale)-1;
+            int outputSize = inputSize-sizeDelete;
             int compteur = 0;
 
-	        double [] output = new double [outputSize];
+            double [] output = new double [outputSize];
 
-	        for(int i=0; i<inputSize; i++) {
-	           
-               if(i%freqDelete != 0)  {
-	               output[i-compteur] = input[i];
-               }
-	           else compteur++;
-	        }
-	        return output;
+            for(int i=0; i<inputSize; i++) {
+               
+               if(i * freqScale - compteur > 1)  {
+                    compteur++;
+                }
+                else {
+                    output[i-compteur] = input[i];
+                }
+            }
+            return output;
         }
         
         if(freqScale < 1)   {
-        	
+            
             freqScale = (1-freqScale)/freqScale;
-	        int sizeAdd = (int)(inputSize*freqScale);
-	        int outputSize = inputSize+sizeAdd;
-	        int freqAdd = inputSize/sizeAdd;
-	        int compteur = -1;
+            int sizeAdd = (int)(inputSize*freqScale);
+            int outputSize = inputSize+sizeAdd;
+            int compteur = 0;
 
-	        double [] output = new double [outputSize];
+            double [] output = new double [outputSize];
 
-            for(int i=0; i<outputSize; i++)  {
-                if(i%freqAdd == 0)  {
-	                compteur++;
+            for(int i=0; i<inputSize; i++) {
+                
+                if(i * freqScale - compteur > 1)    {
+                    output[i+compteur] = input[i];
+                    compteur++;
                 }
-                output[i] = input[i-compteur];
+                output[i+compteur] = input[i];
             }
             return output;
         }

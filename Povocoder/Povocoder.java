@@ -1,3 +1,8 @@
+/* IMPORTANT :
+- utiliser StdAudio et StdDraw
+- 5 secondes sont nécessaires pour l'affichage du spectre APRÈS la fin de la bande audio
+*/
+
 import java.awt.image.SampleModel;
 import java.util.concurrent.CompletionException;
 
@@ -65,6 +70,7 @@ public class Povocoder {
     */
 
     public static void joue(double[] input) {
+    	// Utilisation de StdDraw pour l'affichage du spectre
         StdDraw.enableDoubleBuffering();
         StdAudio.play(input);
 
@@ -73,7 +79,6 @@ public class Povocoder {
         StdDraw.setPenRadius(0.0005);
         
         for(int i=0; i<input.length; i++)   {
-
             StdDraw.line(i,input[i],i,-input[i]);
         }
         StdDraw.show();
@@ -88,6 +93,10 @@ public class Povocoder {
 
     public static double[] resample(double[] input, double freqScale)   {
         int inputSize = input.length;
+        /* Deux utilisations de "Si" :
+        - dans le cas où freqScale est supérieur à 1
+        - dans le cas où freqScale est inférieur à 1
+       */
         
         if(freqScale > 1)   {
             
@@ -140,6 +149,10 @@ public class Povocoder {
     */
 
     public static double[] echo(double[] input, double delayMS, double attn)    {
+    	/* Utilisations de deux boucles "for" avec un décalage nécessaire
+    	   Création d'un tableau de sortie "output"
+    	*/
+
         if(attn <= 0)   {
             return input;
         }
@@ -219,23 +232,25 @@ public class Povocoder {
         }
         return input;
 
-// Le calcul de la durée du signal de sortie :
-// 
-// 1) On calcul le nombre de valeur pour 100 ms soit 4 410 valeurs
-//    ici c'est la constante SEQUENCE.
-//
-// 2) Ensuite on divise la taille du signal d'entrée par cette valeurs,
-//    on trouve le nombre de séquence de 4 410 valeurs qui compose input :
-//    int nbSeqInput = inputSize / SEQUENCE;
-// 
-// 3) La taille du signal de sortie doit être proche de la taille du 
-//    signal d'entrée divisé par timeScale. Donc on peut trouver le nombre de
-//    séquence qui compose le signal de sortie en divisant par SEQUENCE :
-//    int nbSeqOutput = (int)(inputSize / timeScale) / SEQUENCE;
-//
-// 4) Donc la taille du signal de sortie est égale au nombre de fréquence
-//    multiplié par la taille d'une fréquence soit :
-//    outputSize = nbSeqInput * SEQUENCE;
+		/* Le calcul de la durée du signal de sortie :
+		 
+		1) On calcul le nombre de valeur pour 100 ms soit 4 410 valeurs
+		   ici c'est la constante SEQUENCE.
+		
+		2) Ensuite on divise la taille du signal d'entrée par cette valeurs,
+		   on trouve le nombre de séquence de 4 410 valeurs qui compose input :
+		   int nbSeqInput = inputSize / SEQUENCE;
+		 
+		3) La taille du signal de sortie doit être proche de la taille du 
+		   signal d'entrée divisé par timeScale. Donc on peut trouver le nombre de
+		   séquence qui compose le signal de sortie en divisant par SEQUENCE :
+		   int nbSeqOutput = (int)(inputSize / timeScale) / SEQUENCE;
+		
+		4) Donc la taille du signal de sortie est égale au nombre de fréquence
+		   multiplié par la taille d'une fréquence soit :
+		   outputSize = nbSeqInput * SEQUENCE;
+
+		*/
 
     }
 }

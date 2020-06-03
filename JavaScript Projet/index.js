@@ -1,11 +1,11 @@
 var app = new Vue({
   el: '#mydiv',
   data : {
-    nomPerso : 'toto',  // Contient le nom du personnage à observer
+    nomPerso : '',  // Contient le nom du personnage à observer
     idPlayer : '',      // Contient l'id du personnage à observer
     perso : '',         // Accès au personnage sélectionné
     players,            // Accès au tableau de players dans le model
-    mode : 'MJ',        // Contient le mode sélectionné (Player, Cheat ou MJ)
+    mode : 'Player',        // Contient le mode sélectionné (Player, Cheat ou MJ)
     items,              // Accès à la liste items du model
     shop,               // Accès à la liste shop du model
     nbItemInShop,       // Accère au nombre d'item à afficher dans la boutique
